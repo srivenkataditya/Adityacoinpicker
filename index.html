@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Aditya Coin Picker</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#f4f4f4;
+}
+
+h1{
+    color:#0077cc;
+}
+
+#numbers{
+    display:grid;
+    grid-template-columns:repeat(11,1fr);
+    gap:5px;
+    max-width:900px;
+    margin:auto;
+}
+
+.num{
+    padding:10px;
+    background:white;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+.done{
+    background:#444;
+    color:white;
+}
+
+button{
+    padding:10px 20px;
+    margin:10px;
+    font-size:18px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Welcome to Aditya Coin Picker</h1>
+
+<h3>Select Delay Time</h3>
+
+<button onclick="startGame(2)">2 Seconds</button>
+<button onclick="startGame(5)">5 Seconds</button>
+
+<h2 id="current">Ready</h2>
+
+<div id="numbers"></div>
+
+<script>
+
+const teluguNumbers = {
+1:"ఒకటి",2:"రెండు",3:"మూడు",4:"నాలుగు",5:"ఐదు",
+6:"ఆరు",7:"ఏడు",8:"ఎనిమిది",9:"తొమ్మిది",10:"పది",
+11:"పదకొండు",12:"పన్నెండు",13:"పదమూడు",14:"పద్నాలుగు",
+15:"పదిహేను",16:"పదహారు",17:"పదిహేడు",18:"పద్దెనిమిది",
+19:"పంతొమ్మిది",20:"ఇరవై"
+};
+
+for(let i=1;i<=99;i++){
+    let d=document.createElement("div");
+    d.className="num";
+    d.id="n"+i;
+    d.innerText=i;
+    numbers.appendChild(d);
+}
+
+let remaining=[];
+
+function speakTelugu(num){
+    let text=teluguNumbers[num] || num;
+    let utter=new SpeechSynthesisUtterance(text);
+    utter.lang="te-IN";
+    speechSynthesis.speak(utter);
+}
+
+function startGame(delay){
+
+    remaining=[];
+
+    for(let i=1;i<=99;i++){
+        remaining.push(i);
+        document.getElementById("n"+i).classList.remove("done");
+    }
+
+    let interval=setInterval(()=>{
+
+        if(remaining.length===0){
+            clearInterval(interval);
+            return;
+        }
+
+        let index=Math.floor(Math.random()*remaining.length);
+        let number=remaining.splice(index,1)[0];
+
+        document.getElementById("current").innerText=
+        "Selected: "+number;
+
+        document.getElementById("n"+number)
+        .classList.add("done");
+
+        speakTelugu(number);
+
+    }, delay*1000);
+}
+</script>
+
+</body>
+</html>
