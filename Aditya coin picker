@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADITYA COIN PICKER</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:pink;
+    font-family:Arial,sans-serif;
+    text-align:center;
+}
+
+h1{
+    color:blue;
+    font-size:50px;
+    margin:15px 0;
+    font-weight:bold;
+}
+
+#numbers{
+    display:grid;
+    grid-template-columns:repeat(11,1fr);
+    gap:4px;
+    padding:10px;
+}
+
+.num{
+    background:white;
+    border:1px solid #999;
+    border-radius:5px;
+    padding:8px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.done{
+    background:#444;
+    color:white;
+}
+
+button{
+    padding:12px 25px;
+    font-size:20px;
+    margin:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#current{
+    font-size:90px;
+    color:red;
+    margin-top:30px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ADITYA COIN PICKER</h1>
+
+<div id="numbers"></div>
+
+<div>
+    <button onclick="startGame(2)">2 Seconds</button>
+    <button onclick="startGame(5)">5 Seconds</button>
+</div>
+
+<h2 id="current">READY</h2>
+
+<script>
+for(let i=1;i<=99;i++){
+    let d=document.createElement("div");
+    d.className="num";
+    d.id="n"+i;
+    d.innerText=i;
+    document.getElementById("numbers").appendChild(d);
+}
+
+let remaining=[];
+
+function startGame(delay){
+
+    remaining=[];
+
+    for(let i=1;i<=99;i++){
+        remaining.push(i);
+        document.getElementById("n"+i).classList.remove("done");
+    }
+
+    let interval=setInterval(()=>{
+
+        if(remaining.length===0){
+            clearInterval(interval);
+            return;
+        }
+
+        let index=Math.floor(Math.random()*remaining.length);
+        let number=remaining.splice(index,1)[0];
+
+        document.getElementById("current").innerText=number;
+        document.getElementById("n"+number).classList.add("done");
